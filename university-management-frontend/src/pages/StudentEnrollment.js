@@ -32,7 +32,7 @@ const StudentEnrollment = () => {
 
     return (
         <div>
-            <h1>Student Enrollment</h1>
+            <h1>Student</h1>
             <ul>
                 {students.map((student) => (
                     <li key={student.id}>
