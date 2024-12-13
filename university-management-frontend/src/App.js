@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import StudentEnrollment from './pages/StudentEnrollment';
 import StudentList from './pages/StudentList';
+import StudentDetail from './pages/StudentDetail';
 
 function App() {
     return (
@@ -11,6 +12,8 @@ function App() {
                 
                 {/* Route for displaying the student list */}
                 <Route path="/students" element={<StudentList />} />
+                {/* Route for displaying detailed student information */
+                <Route path="/students/:studentId" element={<StudentDetail />} />}
             </Routes>
         </Router>
     );
