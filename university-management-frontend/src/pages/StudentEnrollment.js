@@ -36,9 +36,9 @@ const StudentEnrollment = () => {
             <h1>Student</h1>
             <ul>
                 {students.map((student) => (
-                    <li key={student.id}>
-                        <Link to={`/students/${student.id}`}>
-                            {student.name} - {student.course}
+                    <li key={student.student_id}>
+                        <Link to={`/students/${student.student_id}`}>
+                            {student.first_name} - {student.last_name}
                                 </Link>
                     </li>
                 ))}

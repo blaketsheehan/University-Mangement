@@ -1,44 +1,80 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from supabase import create_client
 
 app = Flask(__name__)
 CORS(app)
-
-# Sample student data (for now, we will use this in memory)
-students = [
-    {'id': 1, 'name': 'John Doe', 'course': 'Computer Science'},
-    {'id': 2, 'name': 'Jane Smith', 'course': 'Mathematics'},
-    {'id': 3, 'name': 'Mark Johnson', 'course': 'Physics'}
-]
+url="https://odwoberwruhawhxublid.supabase.co"
+key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9kd29iZXJ3cnVoYXdoeHVibGlkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczMjA1OTgwOCwiZXhwIjoyMDQ3NjM1ODA4fQ.K_fr90YISHBVouu5UlN_pksuioR4xodPtcDWkZAnLxw"
+supabase = create_client(url,key)
 
 # Route to fetch all students
 @app.route('/api/students', methods=['GET'])
 def get_students():
-    return jsonify(students)
-
-# Route to fetch a student by ID
-@app.route('/api/students/<int:id>', methods=['GET'])
-def get_student_by_id(id):
-    student = next((student for student in students if student['id'] == id), None)
-    if student is not None:
-        return jsonify(student)
-    else:
-        return jsonify({'error': 'Student not found'}), 404
+    try:
+        # Retrieve only the names (first_name and last_name) from the "student" table
+        response = supabase.table("student").select("first_name, last_name,student_id").execute()
+        student_names = response.data
+        return jsonify(student_names)
+    except Exception as e:
+        # Handle and return any errors that occur
+        return jsonify({"error": str(e)})
     
-# Route to add a new student
-@app.route('/api/students', methods=['POST'])
-def add_student():
-    new_student = request.get_json()
-    new_student['id'] = len(students) + 1  # Simple ID generation
-    students.append(new_student)
-    return jsonify(new_student), 201  # Respond with the newly added student
+    # Route to fetch a student by ID
+@app.route('/api/students/<int:student_id>', methods=['GET'])
+def get_students_ID(student_id):
+    try:
+        # Fetch student data based on student_id
+        response = supabase.table("student").select("*").eq("student_id", student_id).execute()
+        students = response.data
+        
+        # If there's at least one student in the response, return the first one
+        if students:
+            return jsonify(students[0])  # Return the first student object (not an array)
+        else:
+            return jsonify({"error": "Student not found"}), 404
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 
-# Route to delete a student by ID
-@app.route('/api/students/<int:id>', methods=['DELETE'])
-def delete_student(id):
-    global students
-    students = [student for student in students if student['id'] != id]
-    return jsonify({'message': 'Student deleted successfully'})
+    # Show Faculty List
+@app.route('/api/faculty', methods=['GET'])
+def get_faculty():
+        try:
+            response = supabase.table("faculty").select("first_name, last_name, faculty_id").execute()
+            faculty = response.data
+            return jsonify(faculty)
+        except Exception as e:
+        # Handle and return any errors that occur
+            return jsonify({"error": str(e)})
+
+    # Route to fetch a faculty by ID
+@app.route('/api/faculty/<int:faculty_id>', methods=['GET'])
+def get_faculty_ID(faculty_id):
+    try:
+        # Fetch student data based on faculty_id
+        response = supabase.table("faculty").select("*").eq("faculty_id", faculty_id).execute()
+        faculty = response.data
+        
+        # If there's at least one faculty in the response, return the first one
+        if faculty:
+            return jsonify(faculty[0])  # Return the first student object (not an array)
+        else:
+            return jsonify({"error": "faculty not found"}), 404
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/students/<int:student_id>/update', methods=['PUT'])
+def update_student(student_id):
+    try:
+        updated_data = request.json
+        response = supabase.table("student").update(updated_data).eq("student_id", student_id).execute()
+        return jsonify({"message": "Student updated successfully", "data": response.data}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
