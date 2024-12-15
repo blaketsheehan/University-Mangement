@@ -1,5 +1,6 @@
 // src/pages/StudentEnrollment.js
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 const StudentEnrollment = () => {
     const [students, setStudents] = useState([]);
@@ -35,8 +36,10 @@ const StudentEnrollment = () => {
             <h1>Student</h1>
             <ul>
                 {students.map((student) => (
-                    <li key={student.id}>
-                        {student.name} - {student.course}
+                    <li key={student.student_id}>
+                        <Link to={`/students/${student.student_id}`}>
+                            {student.first_name} - {student.last_name}
+                                </Link>
                     </li>
                 ))}
             </ul>
