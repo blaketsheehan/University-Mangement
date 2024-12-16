@@ -65,13 +65,36 @@ def get_faculty_ID(faculty_id):
         
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+ #Route to update students based off of ID   
 @app.route('/api/students/<int:student_id>/update', methods=['PUT'])
 def update_student(student_id):
     try:
         updated_data = request.json
         response = supabase.table("student").update(updated_data).eq("student_id", student_id).execute()
         return jsonify({"message": "Student updated successfully", "data": response.data}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+#route to update faculty based off of ID
+@app.route('/api/faculty/<int:faculty_id>/update', methods=['PUT'])
+def update_faculty(faculty_id):
+    try:
+        updated_data = request.json
+        response = supabase.table("faculty").update(updated_data).eq("faculty_id", faculty_id).execute()
+        return jsonify({"message": "Faculty updated successfully", "data": response.data}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+#Route to Add a faculty member using a post request  
+@app.route('/api/faculty/add', methods=['POST'])
+def add_faculty():
+    try:
+        new_faculty = request.json  # Get JSON data from the frontend
+        response = supabase.table("faculty").insert(new_faculty).execute()
+
+        # Check if the insert was successful
+        if response.data:
+            return jsonify({"message": "Faculty added successfully", "data": response.data}), 201
+        else:
+            return jsonify({"error": "Failed to add faculty", "details": response.error}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

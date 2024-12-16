@@ -12,7 +12,8 @@
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4",
-    "open": "^8.4.1" 
+    "open": "^8.4.1", 
+    "html-loader": "^4.2.0" 
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
