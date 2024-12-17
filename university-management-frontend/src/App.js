@@ -8,7 +8,7 @@ import UpdateStudentForm from './pages/UpdateStudentForm';
 import Homepage from './pages/Homepage';
 import UpdateFacultyForm from './pages/UpdateFacultyForm';
 import AddFacultyForm from './pages/AddFacultyForm';
-import Classrooms from './pages/Classroom';
+import Classroom from './pages/Classroom';
 
 function App() {
     return (
@@ -35,7 +35,7 @@ function App() {
                 {/* Route for taking user to a form to update information on a specific faculty member */}
                 <Route path="/faculty/:facultyId/update" element={<UpdateFacultyForm />} />
                  {/* Route for viewing classrooms */}
-                 <Route path="/classroom" element={<Classrooms />} />
+                 <Route path="/classroom" element={<Classroom />} />
             </Routes>
         </Router>
     );

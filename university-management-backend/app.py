@@ -53,7 +53,7 @@ def get_faculty():
 @app.route('/api/faculty/<int:faculty_id>', methods=['GET'])
 def get_faculty_ID(faculty_id):
     try:
-        # Fetch student data based on faculty_id
+        # Fetch faculty data based on faculty_id
         response = supabase.table("faculty").select("*").eq("faculty_id", faculty_id).execute()
         faculty = response.data
         
@@ -97,6 +97,18 @@ def add_faculty():
             return jsonify({"error": "Failed to add faculty", "details": response.error}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+     # Show Classroom List
+@app.route('/api/classroom', methods=['GET'])
+def get_classrooms():
+        try:
+            response = supabase.table("Classroom").select("classroom_id, room_number, faculty_id, course_id").execute()
+            faculty = response.data
+            return jsonify(faculty)
+        except Exception as e:
+        # Handle and return any errors that occur
+            return jsonify({"error": str(e)})
+
 
 
 if __name__ == '__main__':

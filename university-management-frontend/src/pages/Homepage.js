@@ -3,9 +3,7 @@ import './styles.css'; // Import your CSS file
 import { useNavigate } from 'react-router-dom';
 // Mock function to handle button clicks (replace with actual logic)
 
-const fetchData = (type) => {
-    console.log(`Fetching data for ${type}...`);
-};
+
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -44,7 +42,7 @@ const HomePage = () => {
                 {/* Classrooms Section */}
                 <section id="classrooms" className="section">
                     <h2>Classrooms</h2>
-                    <button onClick={() => fetchData('classrooms')}>View Classrooms</button>
+                    <button onClick={() => navigate('/classroom')}>View Classrooms</button>
                     <div id="classrooms-data"></div>
                 </section>
             </main>
